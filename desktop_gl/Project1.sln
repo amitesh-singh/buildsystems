@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Project1", "Project1\Projec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Point", "Project2\Project2.vcxproj", "{9E06AE4A-A299-493E-835C-851A04A370E6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rectangle", "Rectangle\Rectangle.vcxproj", "{C71904AE-1602-4369-BF4C-E8A936051E98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -38,6 +40,17 @@ Global
 		{9E06AE4A-A299-493E-835C-851A04A370E6}.Release|Win32.ActiveCfg = Release|Win32
 		{9E06AE4A-A299-493E-835C-851A04A370E6}.Release|Win32.Build.0 = Release|Win32
 		{9E06AE4A-A299-493E-835C-851A04A370E6}.Release|x64.ActiveCfg = Release|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|Win32.Build.0 = Debug|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|x64.ActiveCfg = Debug|x64
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Debug|x64.Build.0 = Debug|x64
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Release|Win32.ActiveCfg = Release|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Release|Win32.Build.0 = Release|Win32
+		{C71904AE-1602-4369-BF4C-E8A936051E98}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
