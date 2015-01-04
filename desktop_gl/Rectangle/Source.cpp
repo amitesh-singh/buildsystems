@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 	//Initialize Glew ~ which would load glFunctions :)
 	GLenum err = glewInit();
 	
-	if (err != GLEW_OK)
+	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
 	}

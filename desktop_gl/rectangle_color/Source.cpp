@@ -102,14 +102,14 @@ void InitGL(UserData *d)
 	glGenBuffers(1, &d->vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, d->vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
-
+	int len = 6 * sizeof(GLfloat);
 	#define BUFFER_OFFSET(x) ((char *)NULL + (x))
 
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, len, BUFFER_OFFSET(0));
+
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(12));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, len, BUFFER_OFFSET(12));
 }
 
 int main(int argc, char **argv)
@@ -122,7 +122,6 @@ int main(int argc, char **argv)
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	//glutInit(&argc, argv);
 	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
 	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
 	if( window == NULL ){
@@ -136,10 +135,12 @@ int main(int argc, char **argv)
 	glfwMakeContextCurrent(window); // Initialize GLEW 
 	glewExperimental = true; // Needed in core profile 
 
-	//Initialize Glew ~ which would load glFunctions :)
+	//Initialize Glew ~ which would load glFunctions pointers. :)
+	//Note: You must declare glew here only else most of gl functions won't get initialized.
+	// glCreateShader function pointer would be 0.
 	GLenum err = glewInit();
 	
-	if (err != GLEW_OK)
+	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
 	}

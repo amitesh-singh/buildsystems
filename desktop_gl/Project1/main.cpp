@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 	///NOTE: Always initialize glewinit after this, else glShaderCreate() will be null....
 	GLenum err = glewInit();
 	
-	if (err != GLEW_OK)
+	if (err == GLEW_OK)
 	{
 		std::cout << "gliew initialized ok\n";
 		//return 0;

@@ -1,18 +1,12 @@
-// GLEW
-//#define GLEW_STATIC
-//#pragma comment( lib, "glfw3.lib" )
-// GLFW
-//The workaround:
+//In this example, we are drawing a point on surface with point size 10.0f.
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
  
-
+//Include glew header before glfw3.h
 #include <GL/glew.h>
-
-//End workaround
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
@@ -85,9 +79,7 @@ void InitGL(UserData *d)
 
 	static const GLfloat vertices[] =
 	{
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f,
 	};
 
 	//create vbo
@@ -97,6 +89,12 @@ void InitGL(UserData *d)
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
+
+	//Set the point size
+	//Note:  This functon is absent in Opengl ES 2.0
+	//You need to define this in vertex Shader. gl_PointSize = 10.0; 
+	glPointSize(10.0f); //Only present in Dekstop GL.
+	//TODO: Check if glPointSize is present in Opengl ES 3.0.
 }
 
 int main(int argc, char **argv)
@@ -126,7 +124,7 @@ int main(int argc, char **argv)
 	//Initialize Glew ~ which would load glFunctions :)
 	GLenum err = glewInit();
 	
-	if (err != GLEW_OK)
+	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
 	}
@@ -146,14 +144,15 @@ int main(int argc, char **argv)
  
 	do{
 		//GL Code starts
-
+		//Clear the color buffer before drawing.
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(userdata.programId);
 		
 		glBindVertexArray(userdata.vao);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//Draw our point
+		glDrawArrays(GL_POINTS, 0, 1);
 
 		//GL Code ends
 
