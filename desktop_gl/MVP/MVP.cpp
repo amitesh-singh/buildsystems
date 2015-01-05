@@ -49,7 +49,7 @@ void InitGL(UserData *d)
 							"uniform mat4 proj; \n"
 						   "out vec2 oTexCoord; \n"
 						   "void main() {\n"
-						   "gl_Position = trans * view * proj * vec4(position_model, 1.0);\n"
+						   "gl_Position =  proj * view * trans * vec4(position_model, 1.0);\n"
 						   " oTexCoord = vTexCoord; \n"
 						   "}\n";
 
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+	window = glfwCreateWindow( 700, 600, "Window sample", NULL, NULL); 
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
@@ -214,24 +214,22 @@ int main(int argc, char **argv)
 
 	//lets rotate image through Z axis using glm apis
 	glm::mat4 trans;
+	
+	GLint uniTrans = glGetUniformLocation(userdata.programId, "trans");
+	cout << "ma4 uniform location: " << uniTrans << endl;
+	
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(1.2f, 1.2f, 1.2f),
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 0.0f, 1.0f)
 		);
 	GLint uniView = glGetUniformLocation(userdata.programId, "view");
+	
+	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 100.0f);
 
-	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
+	//glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
 	GLint uniProj = glGetUniformLocation(userdata.programId, "proj");
 	
-
-
-	GLint uniTrans = glGetUniformLocation(userdata.programId, "trans");
-	cout << "ma4 uniform location: " << uniTrans << endl;
-
-	glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-	glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
-
 	do
 	{
 		//GL Code starts
@@ -239,22 +237,14 @@ int main(int argc, char **argv)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(userdata.programId);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, userdata.texId);
-		glUniform1i(userdata.loc, 0);
+		trans = glm::rotate(trans, glm::radians((GLfloat)clock() / (GLfloat)CLOCKS_PER_SEC * 180.0f),
+			glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+    	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 		
 		glBindVertexArray(userdata.vao);
 
-		static float angle = 0;
-		if (angle >= 360.0f)
-			angle = 0;
-		angle += 0.002f;
-		//float t = glfwGetTime();
-		//cout << angle << endl;
-		// or glm::radians(angle)
-		trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
-		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
 			//We already passed indices to EBO, so no need to pass indices here. ;)
 			(void *) 0);
