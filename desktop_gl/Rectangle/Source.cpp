@@ -81,7 +81,7 @@ void InitGL(UserData *d)
 	static const GLfloat vertices[] =
 	{
 		-0.5f, -0.5f, 0.0f,
-		-0.5f, 0.0f, 0.0f,
+		-0.5f, 0.5f, 0.0f,
 		0.5f,  0.0f, 0.0f,
 		0.0f, 0.5f, 0.0f,
 	};
@@ -99,7 +99,7 @@ void InitGL(UserData *d)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *) 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *) 0);
 }
 
 int main(int argc, char **argv)
