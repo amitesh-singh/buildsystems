@@ -11,6 +11,10 @@
 //lot of compilation errors.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+//Glm headers
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <iostream>
 #include <string>
@@ -38,9 +42,10 @@ void InitGL(UserData *d)
 	string  vertexShader = "#version 330 core\n"
 						   "layout(location = 0) in vec3 position_model; \n"
 						   "layout(location = 1) in vec2 vTexCoord; \n"
+						    "uniform mat4 trans; \n"
 						   "out vec2 oTexCoord; \n"
 						   "void main() {\n"
-						   "gl_Position = vec4(position_model, 1.0);\n"
+						   "gl_Position = trans * vec4(position_model, 1.0);\n"
 						   " oTexCoord = vTexCoord; \n"
 						   "}\n";
 
@@ -98,13 +103,13 @@ void InitGL(UserData *d)
 	static const GLfloat vertices[] =
 	{
 		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
 		0.5f,  -0.5f, 0.0f, 1.0f, 1.0f,
-		0.5f, 0.5f, 0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f,
 	};
 	static const GLubyte index[] = 
 	{
-		0, 1, 2, 0, 2, 3
+		0, 1, 2, 2, 3, 0
 	};
 
 	//create ebo
@@ -144,6 +149,7 @@ void InitGL(UserData *d)
 	int w, h;
 
 	pixels = SOIL_load_image("DSCN1310.jpg", &w, &h, 0, SOIL_LOAD_RGBA);
+	printf("image loaded: pixels: %p, w: %d, h: %d\n", pixels, w, h);
 	// set texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -153,6 +159,7 @@ void InitGL(UserData *d)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0,
 		GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 	SOIL_free_image_data(pixels);
+
 }
 
 int main(int argc, char **argv)
@@ -200,20 +207,27 @@ int main(int argc, char **argv)
 	InitGL(&userdata);
 
 	cout << "vao: " << userdata.vao;
- 
+
+	//lets rotate image through Z axis using glm apis
+	glm::mat4 trans;
+	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+	GLint uniTrans = glGetUniformLocation(userdata.programId, "trans");
+	cout << "ma4 uniform location: " << uniTrans << endl;
+
 	do
 	{
 		//GL Code starts
-
+		//glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(userdata.programId);
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, userdata.texId);
 		glUniform1i(userdata.loc, 0);
 		
 		glBindVertexArray(userdata.vao);
+    	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
 			//We already passed indices to EBO, so no need to pass indices here. ;)
