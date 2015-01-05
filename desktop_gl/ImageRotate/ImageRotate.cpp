@@ -224,22 +224,16 @@ int main(int argc, char **argv)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(userdata.programId);
+		float t = glfwGetTime();
+		trans = glm::rotate(trans, glm::radians(t * 0.002f), glm::vec3(0.0f, 0.0f, 1.0f));
+    	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, userdata.texId);
 		glUniform1i(userdata.loc, 0);
 		
 		glBindVertexArray(userdata.vao);
 
-		static float angle = 0;
-		if (angle >= 360.0f)
-			angle = 0;
-		angle += 0.002f;
-		//float t = glfwGetTime();
-		cout << angle << endl;
-		// or glm::radians(angle)
-		trans = glm::rotate(trans, glm::radians((float)clock() / (float)CLOCKS_PER_SEC * 180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    	glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(trans));
-		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
 			//We already passed indices to EBO, so no need to pass indices here. ;)
 			(void *) 0);
