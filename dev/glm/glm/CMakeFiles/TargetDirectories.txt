@@ -1,0 +1,2 @@
+C:/Users/dsingh440/Downloads/glm/glm/CMakeFiles/ALL_BUILD.dir
+C:/Users/dsingh440/Downloads/glm/glm/CMakeFiles/ZERO_CHECK.dir
