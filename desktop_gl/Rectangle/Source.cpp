@@ -31,7 +31,7 @@ void InitGL(UserData *d)
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
 	//Vertex Shader
-	string  vertexShader = "#version 400 core\n"
+	string  vertexShader = "#version 330 core\n"
 						   "layout(location = 0) in vec3 position_model; \n"
 						   "void main() {\n"
 						   "gl_Position = vec4(position_model.x, position_model.y, position_model.z, 1.0); }\n";
@@ -50,7 +50,7 @@ void InitGL(UserData *d)
     fprintf(stdout, "\nvertex: %s\n", &FragmentShaderErrorMessage[0]);
 
 	//Fragment shader
-	string fragmentShader = "#version 400 core\n"
+	string fragmentShader = "#version 330 core\n"
 		"out vec3 color;\n"
 		" void main() { \n"
 		"color = vec3(1, 0, 0); }";
@@ -105,9 +105,9 @@ void InitGL(UserData *d)
 int main(int argc, char **argv)
 {
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);

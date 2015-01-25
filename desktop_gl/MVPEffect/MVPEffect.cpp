@@ -36,7 +36,7 @@ void InitGL(UserData *d)
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
 	//Vertex Shader
-	string  vertexShader = "#version 400 core\n"
+	string  vertexShader = "#version 330 core\n"
 						   "layout(location = 0) in vec3 position_model; \n"
 						   "layout(location = 1) in vec3 vertexColor; \n"
 						   "out vec3 oColor; \n"
@@ -62,7 +62,7 @@ void InitGL(UserData *d)
     fprintf(stdout, "\nvertex: %s\n", &FragmentShaderErrorMessage[0]);
 
 	//Fragment shader
-	string fragmentShader = "#version 400 core\n"
+	string fragmentShader = "#version 330 core\n"
 		"out vec3 color;\n"
 		"in vec3 oColor;\n"
 		" void main() { \n"
@@ -123,20 +123,23 @@ void InitGL(UserData *d)
 int main(int argc, char **argv)
 {
     glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+   // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+	
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
 	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
 	if( window == NULL ){
+		int i = 0;
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
 			Try the 2.1 version of the tutorials.\n" );
 		glfwTerminate();
+		cin >> i;
 		return -1;
 	}
 

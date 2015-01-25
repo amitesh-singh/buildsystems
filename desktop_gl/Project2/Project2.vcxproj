@@ -79,8 +79,8 @@
     <LibraryPath>C:\Users\dsingh440\Downloads\glew-1.11.0\lib\Release\x64;C:\Users\dsingh440\Downloads\glfw-3.0.4.bin.WIN64\lib-msvc120;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\dsingh440\Downloads\glew-1.11.0\include;C:\Users\dsingh440\Downloads\glfw-3.0.4.bin.WIN64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\dsingh440\Downloads\glew-1.11.0\lib\Release\x64;C:\Users\dsingh440\Downloads\glfw-3.0.4.bin.WIN64\lib-msvc120;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\opengl\dev\glew-1.11.0\include;E:\opengl\dev\SOIL\src;E:\opengl\dev\glm;E:\opengl\dev\glfw-3.0.4.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\opengl\dev\SOIL\projects\VC9\x64\Debug;E:\opengl\dev\glfw-3.0.4.bin.WIN64\lib-msvc120;E:\opengl\dev\glew-1.11.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -70,8 +70,8 @@
     <LibraryPath>D:\opengl\dev\SOIL\projects\VC9\x64\Debug;D:\opengl\dev\glfw-3.0.4.bin.WIN64\lib-msvc120;D:\opengl\dev\glew-1.11.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\opengl\dev\SOIL\src;D:\opengl\dev\glm;D:\opengl\dev\glfw-3.0.4.bin.WIN64\include;D:\opengl\dev\glew-1.11.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\opengl\dev\SOIL\projects\VC9\x64\Debug;D:\opengl\dev\glfw-3.0.4.bin.WIN64\lib-msvc120;D:\opengl\dev\glew-1.11.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\opengl\dev\SOIL\src;E:\opengl\dev\glm;E:\opengl\dev\glfw-3.0.4.bin.WIN64\include;E:\opengl\dev\glew-1.11.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\opengl\dev\glew-1.11.0\lib\Release\x64;D:\opengl\dev\SOIL\projects\VC9\x64\Debug;E:\opengl\dev\glfw-3.0.4.bin.WIN64\lib-msvc120;D:\opengl\dev\glew-1.11.0\lib\Release\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
