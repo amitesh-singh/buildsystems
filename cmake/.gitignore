@@ -1,0 +1,10 @@
+CMakeFiles/
+Debug/
+*.sdf
+*.sln
+*.suo
+*.vcxproj
+*.filters
+CMakeCache.txt
+*.cmake
+
