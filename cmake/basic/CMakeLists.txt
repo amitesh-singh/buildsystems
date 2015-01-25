@@ -1,3 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
 project(Hello)
+enable_testing()
 add_executable(Hello hello.c)
+add_test(HelloTest Hello)
