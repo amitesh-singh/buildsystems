@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "myprog.h"
+#include "mylib.h"
 
 int main()
 {

@@ -1,5 +1,5 @@
 project("lib example 2")
-
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/mylib/)
 add_executable(myprog myprog.c)
 target_link_libraries(myprog mylib)
 add_subdirectory(mylib)
