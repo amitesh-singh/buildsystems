@@ -1,0 +1,2 @@
+My system is @CMAKE_SYSTEM_NAME@ and processor is
+@CMAKE_HOST_SYSTEM_PROCESSOR@.
