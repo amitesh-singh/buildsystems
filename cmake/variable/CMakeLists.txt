@@ -11,3 +11,6 @@ option(USE_JPEG "Do you want to use JPEG?")
 if (NOT ${USE_JPEG})
    message("Yes, jpeg support added")
 endif (NOT ${USE_JPEG})
+# Command to output information to the console
+# Useful for displaying errors, warnings, and debugging
+message ("cxx Flags: " ${CMAKE_CXX_FLAGS})
