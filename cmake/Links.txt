@@ -1,1 +1,2 @@
 https://cognitivewaves.wordpress.com/cmake-and-visual-studio/
+http://bast.fr/talks/cmake/kung-fu/#14
