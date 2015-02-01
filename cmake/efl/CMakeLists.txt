@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 2.8)
 project(myefl)
 #find_package(elementary REQUIRED)
+find_program(EDJE_CC_EXECUTABLE edje_cc)
+if(NOT EDJE_CC_EXECUTABLE)
+   message(FATAL_ERROR "edje_cc could not be found.")
+endif()
+if(EDJE_CC_EXECUTABLE)
+   message(STATUS "edje_cc is found. :)")
+endif()
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(ELEMENTARY REQUIRED elementary)
 #This is how we check for modules
