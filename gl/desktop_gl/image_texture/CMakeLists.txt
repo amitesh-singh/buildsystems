@@ -1,0 +1,1 @@
+add_executable(ImageTexture2 ImageTexture.cpp)

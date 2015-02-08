@@ -1,0 +1,1 @@
+add_executable(Project1 main.cpp)
