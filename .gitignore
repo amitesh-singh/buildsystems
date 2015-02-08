@@ -16,3 +16,10 @@
 *.exe
 *.opensdf
 *.obj
+
+#Cmake shit
+CMakeFiles/
+CMakeCache.txt
+*.vcxproj*
+cmake_install.cmake
+*.sln
