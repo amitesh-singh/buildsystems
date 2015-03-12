@@ -1,0 +1,12 @@
+collections {
+   group { name: "test";
+      parts {
+         part { name: "bg"; type: RECT;
+            description {
+               state: "default" 0.0;
+               color: 255 0 0 244;
+            }
+         }
+      }
+   }
+}
