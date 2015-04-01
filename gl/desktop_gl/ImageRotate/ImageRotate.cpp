@@ -41,6 +41,8 @@ void InitGL(UserData *d)
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
 	//Vertex Shader
+    // layout(location=0) -> This is added into OpenGl 3.3 
+    // and attribute is GL_ARB_explicit_attrib_location
 	string  vertexShader = "#version 330 core\n"
 						   "layout(location = 0) in vec3 position_model; \n"
 						   "layout(location = 1) in vec2 vTexCoord; \n"
@@ -65,12 +67,13 @@ void InitGL(UserData *d)
     fprintf(stdout, "\nvertex: %s\n", &FragmentShaderErrorMessage[0]);
 
 	//Fragment shader
+    //Remember Texture2D is obselete in Recent version of opengl, especially opengl >= 3.1
 	string fragmentShader = "#version 330 core\n"
 		"layout(location=0) out vec4 color;\n"
 		"in vec2 oTexCoord;\n"
 		"uniform sampler2D texSample;\n"
 		" void main() { \n"
-		"color = texture2D(texSample, oTexCoord); }";
+		"color = texture(texSample, oTexCoord); }";
 
 	char const * cFragmentShader = fragmentShader.c_str();
 	glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
@@ -168,8 +171,10 @@ int main(int argc, char **argv)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    //Following lines are commented so that this code works with Intel Drivers (~ >= 3.1 (full support),
+    // and 3.X, X > 1, partial support.
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
@@ -213,7 +218,6 @@ int main(int argc, char **argv)
 	//lets rotate image through Z axis using glm apis
 	glm::mat4 trans;
 	
-
 	GLint uniTrans = glGetUniformLocation(userdata.programId, "trans");
 	cout << "ma4 uniform location: " << uniTrans << endl;
 
@@ -245,7 +249,8 @@ int main(int argc, char **argv)
 		glfwPollEvents();
  
 	} // Check if the ESC key was pressed or the window was closed
-	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
+	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS
+        && glfwWindowShouldClose(window) == 0 );
 	
     return 0;
 }
