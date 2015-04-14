@@ -19,7 +19,9 @@ endif()
 set(glsubdir  
     basic
     triangle
-    trianglestrip)
+    trianglestrip
+    multipleVbos
+    multiplevaos)
 
 #set(glsubdir ${glsubdir} PARENT_SCOPE)
 foreach(gldir ${glsubdir})
