@@ -18,7 +18,8 @@ if (MSVC)
 endif()
 set(glsubdir  
     basic
-    Triangle)
+    triangle
+    trianglestrip)
 
 #set(glsubdir ${glsubdir} PARENT_SCOPE)
 foreach(gldir ${glsubdir})
