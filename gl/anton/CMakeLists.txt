@@ -21,7 +21,9 @@ set(glsubdir
     triangle
     trianglestrip
     multipleVbos
-    multiplevaos)
+    multiplevaos
+    movetriangle
+    animtriangle)
 
 #set(glsubdir ${glsubdir} PARENT_SCOPE)
 foreach(gldir ${glsubdir})

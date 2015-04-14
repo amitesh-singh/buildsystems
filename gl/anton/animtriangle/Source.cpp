@@ -78,11 +78,9 @@ int main(int argc, char **argv)
     const char *vs_shd_src = 
         "#version 400\n"
         "layout(location = 0) in vec3 pos;\n"
-        "layout(location = 1) in vec3 color_in;\n"
-        "out vec3 color;\n"
+        "uniform mat4 matrix;\n"
         "void main() {\n"
-        "color = color_in;\n"
-        "gl_Position = vec4(pos, 2.0f);\n"
+        "gl_Position = matrix * vec4(pos, 2.0f);\n"
         "}\n";
 
     vs = glCreateShader(GL_VERTEX_SHADER);
@@ -91,10 +89,9 @@ int main(int argc, char **argv)
     
      const char *fs_shd_src = 
         "#version 400\n"
-        "in vec3 color;\n"
-        "out vec4 frag_color;\n"
+        "out vec4 color;\n"
         "void main() {\n"
-        "frag_color = vec4(color, 1.0f);\n"
+        "color = vec4(0.0f, 1.0f, 0.0f, 1.0f);\n"
         "}\n";
     fs = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fs, 1, &fs_shd_src, NULL);
@@ -125,20 +122,6 @@ int main(int argc, char **argv)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
 
-    GLfloat colors[] = 
-    {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
-    };
-
-    GLuint vbo_color = 0;
-
-    glGenBuffers(1, &vbo_color);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_color);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-
-    //This vao is to draw triangle
     GLuint vao = 0;
 
     glGenVertexArrays(1, &vao);
@@ -148,86 +131,64 @@ int main(int argc, char **argv)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_color);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    //unbind previous VAO, Its good habit to unbind previos vao
-    glBindVertexArray (0);
-
-    //2nd Vao
-    GLuint vao2 = 0, vbo_points2 = 0, vbo_colors2 = 0;
-
-    vbo_points2 = vbo; //same as above
-
-    GLfloat colors2[] = 
+    //Column major
+    GLfloat matrix[] = 
     {
-        0.0f, 0.0f, 1.0f,
-        0.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 1.0f
+        1.0f, 0.0f, 0.0f, 0.0f, //1st column
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.0f, 0.0f, 1.0f,
+        //Tx   Ty   Tz -> Transformations coordinates
     };
 
-    glGenBuffers(1, &vbo_colors2);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_colors2);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors2), colors2, GL_STATIC_DRAW);
-
-    glGenVertexArrays(1, &vao2);
-    glBindVertexArray(vao2);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_points2);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_colors2);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    //unbind vao2
+    int matrix_location = glGetUniformLocation(programId, "matrix");
+    cout << "matrix location: " << matrix_location << endl;
+    glUseProgram(programId);
+    glUniformMatrix4fv(matrix_location, 1, GL_FALSE, matrix);
+      
+    //unbind vao
     glBindVertexArray(0);
 
-    int _pressed_0 = 0;
+    glEnable (GL_CULL_FACE); // cull face
+	glCullFace (GL_BACK); // cull back face
+	glFrontFace (GL_CW); // GL_CCW for counter clock-wise
+
+    float speed = 1.0f;
+    float last_position = 0.0f;
     while (!glfwWindowShouldClose(window))
     {
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //Add a timer for doing animation,
+        static double previous_seconds = glfwGetTime ();
+        double current_seconds = glfwGetTime ();
+        double elapsed_seconds = current_seconds - previous_seconds;
+        previous_seconds = current_seconds;
 
+        // reverse direction when going to far left or righT
+        if (fabs(last_position) > 1.0f) {
+            speed = -speed;
+        }
+        // update the matrix
+
+        matrix[12] = elapsed_seconds * speed + last_position;
+        last_position = matrix[12];
         glUseProgram (programId);
-        
-        if (!_pressed_0)
-        {
-            glBindVertexArray(0);
-            cout << "Drawing with vao1\n";
-            glBindVertexArray (vao);
-            ////draw points 0-3 from the currently bound VAO with current in-use shader
-            glDrawArrays (GL_TRIANGLES, 0, 3);
-        }
-        else if (_pressed_0)
-        {
-            cout << "Drawing with vao2\n";
-            glBindVertexArray(0);
+        glUniformMatrix4fv (matrix_location, 1, GL_FALSE, matrix);
 
-        //glUseProgram (programId);
-            glBindVertexArray(vao2);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
-        }
-
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glUseProgram (programId);
+        glBindVertexArray (vao);
+        //draw points 0-3 from the currently bound VAO with current in-use shader
+        glDrawArrays (GL_TRIANGLES, 0, 3);
         // update other events like input handling
         glfwPollEvents ();
-      
-        if (GLFW_PRESS == glfwGetKey (window, GLFW_KEY_ESCAPE)) {
-            cout << "Escape key is pressed\n";
-            glfwSetWindowShouldClose(window, 1);
-        }
-        if (GLFW_PRESS == glfwGetKey(window, GLFW_KEY_0))
-        {
-            cout << "0 key is pressed\n";
-            _pressed_0 = !_pressed_0;
-        }
-          // put the stuff we've been drawing onto the display
+        // put the stuff we've been drawing onto the display
         glfwSwapBuffers(window);
     }
 
    // close GL context and any other GLFW resources
     glfwTerminate();
+    glDeleteProgram(programId);
 
     return 0;
 }
+
