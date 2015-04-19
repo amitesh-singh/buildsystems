@@ -65,6 +65,13 @@ int main(int argc, char **argv)
     cout << "Renderer: " << renderer << "\n";
 	cout << "Vendor: " << vendor << endl;
 
+    //Lets print out the GL extensions
+    const GLubyte *extensions = NULL;
+
+    extensions = glGetString(GL_EXTENSIONS);
+
+    cout << "Extensions: \n" << extensions;
+
      // tell GL to only draw onto a pixel if the shape is closer to the viewer
     glEnable(GL_DEPTH_TEST); // enable depth-testing
     glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
