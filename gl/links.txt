@@ -2,3 +2,7 @@ Best link for quick reading
 -----------------------------
 http://antongerdelan.net/opengl/hellotriangle.html
 http://ogldev.atspace.co.uk/index.html
+
+Understanding matrices
+---------------------
+http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
