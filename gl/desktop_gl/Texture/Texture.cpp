@@ -5,9 +5,9 @@
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
 #pragma comment(lib, "SOIL.lib")
-// 
 //
-////Note: glew header should be included before glfw header else you will get 
+//
+////Note: glew header should be included before glfw header else you will get
 ////lot of compilation errors.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <SOIL.h>
+#include <ctsdio>
 
 using namespace std;
 //
@@ -30,7 +31,7 @@ using namespace std;
 //
 //void InitGL(UserData *d)
 //{
-//	//create our shader 
+//	//create our shader
 //	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 //	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 //
@@ -68,7 +69,7 @@ using namespace std;
 //	char const * cFragmentShader = fragmentShader.c_str();
 //	glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
 //	glCompileShader(fragmentShaderId);
-//	
+//
 //	// Check Fragment Shader
 //    glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &Result);
 //    glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
@@ -94,7 +95,7 @@ using namespace std;
 //		0.5f,  -0.5f, 0.0f, 1.0f, 1.0f,
 //		0.5f, 0.5f, 0.0f,  0.0f, 1.0f,
 //	};
-//	static const GLubyte index[] = 
+//	static const GLubyte index[] =
 //	{
 //		0, 1, 2, 0, 3, 2
 //	};
@@ -121,7 +122,7 @@ using namespace std;
 //	//Texture
 //	glGenTextures(1, &d->tex);
 //	glBindTexture(GL_TEXTURE_2D, d->tex);
-//	/*GLubyte pixels[] = 
+//	/*GLubyte pixels[] =
 //	{
 //		255, 0, 0,
 //		0, 255, 0,
@@ -138,7 +139,7 @@ using namespace std;
 //	d->loc = glGetUniformLocation(d->programId, "s");
 //	//glUniform1i(loc, 0);
 //	cout << "location of sampler: " << d->loc << endl;
-//}	
+//}
 //
 //int main(int argc, char **argv)
 //{
@@ -150,8 +151,8 @@ using namespace std;
 //
 //	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 //
-//	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-//	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+//	GLFWwindow* window; // (In the accompanying source code, this variable is global)
+//	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL);
 //	if( window == NULL ){
 //		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 //			they are not 3.3 compatible. \
@@ -160,14 +161,14 @@ using namespace std;
 //		return -1;
 //	}
 //
-//	glfwMakeContextCurrent(window); // Initialize GLEW 
-//	glewExperimental = true; // Needed in core profile 
+//	glfwMakeContextCurrent(window); // Initialize GLEW
+//	glewExperimental = true; // Needed in core profile
 //
 //	//Initialize Glew ~ which would load glFunctions pointers. :)
 //	//Note: You must declare glew here only else most of gl functions won't get initialized.
 //	// glCreateShader function pointer would be 0.
 //	GLenum err = glewInit();
-//	
+//
 //	if (err == GLEW_OK)
 //	{
 //		std::cout << "Glew initialized ok\n";
@@ -180,12 +181,12 @@ using namespace std;
 //
 //	UserData userdata;
 //	//Call opengl init functions
-//	cout << "OpenGL version: " << glGetString(GL_VERSION); 
+//	cout << "OpenGL version: " << glGetString(GL_VERSION);
 //	cout << "\n Vendor: " << glGetString(GL_VENDOR);
 //	InitGL(&userdata);
-//	                   
+//
 //	cout << "vao: " << userdata.vao;
-// 
+//
 //	do{
 //		//GL Code starts
 //
@@ -194,15 +195,15 @@ using namespace std;
 //
 //
 //		glUseProgram(userdata.programId);
-//		
-//		
+//
+//
 //		glActiveTexture(GL_TEXTURE0);
 //		glBindTexture(GL_TEXTURE_2D, userdata.tex);
 //		glUniform1i(userdata.loc, 0);
-//		
+//
 //		glBindVertexArray(userdata.vao);
 //
-//		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
+//		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE,
 //			//We already passed indices to EBO, so no need to pass indices here. ;)
 //			(void *) 0);
 //
@@ -211,10 +212,10 @@ using namespace std;
 //		 // Swap buffers
 //		glfwSwapBuffers(window);
 //		glfwPollEvents();
-// 
+//
 //	} // Check if the ESC key was pressed or the window was closed
 //	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
-//	
+//
 //
 //    return 0;
 //}
@@ -248,7 +249,7 @@ bool check_program_link_status(GLuint obj) {
         std::vector<char> log(length);
         glGetProgramInfoLog(obj, length, &length, &log[0]);
         std::cerr << &log[0];
-        return false;   
+        return false;
     }
     return true;
 }
@@ -256,7 +257,7 @@ bool check_program_link_status(GLuint obj) {
 int main() {
     int width = 640;
     int height = 480;
-    
+
     if(glfwInit() == GL_FALSE) {
         std::cerr << "failed to init GLFW" << std::endl;
         return 1;
@@ -266,7 +267,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
- 
+
     // create a window
     GLFWwindow *window;
     if((window = glfwCreateWindow(width, height, "03texture", 0, 0)) == 0) {
@@ -274,19 +275,19 @@ int main() {
         glfwTerminate();
         return 1;
     }
-    
+
     glfwMakeContextCurrent(window);
-	glewExperimental = true; // Needed in core profile 
+	glewExperimental = true; // Needed in core profile
 
 	GLenum err = glewInit();
-	
+
 	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
 	}
 
 	std::cout << "glew version using: " << glewGetString(GLEW_VERSION) << std::endl;
-    
+
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     // shader source code
@@ -299,7 +300,7 @@ int main() {
         "   ftexcoord = vtexcoord;\n"
         "   gl_Position = vposition;\n"
         "}\n";
-        
+
     std::string fragment_source =
         "#version 330\n"
         "uniform sampler2D tex;\n" // texture uniform
@@ -308,10 +309,10 @@ int main() {
         "void main() {\n"
         "   FragColor = texture(tex, ftexcoord);\n"
         "}\n";
-   
+
     // program and shader handles
     GLuint shader_program, vertex_shader, fragment_shader;
-    
+
     // we need these to properly pass the strings
     const char *source;
     int length;
@@ -320,54 +321,54 @@ int main() {
     vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     source = vertex_source.c_str();
     length = vertex_source.size();
-    glShaderSource(vertex_shader, 1, &source, &length); 
+    glShaderSource(vertex_shader, 1, &source, &length);
     glCompileShader(vertex_shader);
     if(!check_shader_compile_status(vertex_shader)) {
         glfwDestroyWindow(window);
         glfwTerminate();
         return 1;
     }
- 
+
     // create and compiler fragment shader
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
     source = fragment_source.c_str();
     length = fragment_source.size();
-    glShaderSource(fragment_shader, 1, &source, &length);   
+    glShaderSource(fragment_shader, 1, &source, &length);
     glCompileShader(fragment_shader);
     if(!check_shader_compile_status(fragment_shader)) {
         glfwDestroyWindow(window);
         glfwTerminate();
         return 1;
     }
-        
+
     // create program
     shader_program = glCreateProgram();
-    
+
     // attach shaders
     glAttachShader(shader_program, vertex_shader);
     glAttachShader(shader_program, fragment_shader);
-    
+
     // link the program and check for errors
     glLinkProgram(shader_program);
     check_program_link_status(shader_program);
-    
+
     // get texture uniform location
     GLint texture_location = glGetUniformLocation(shader_program, "tex");
-    
+
     // vao and vbo handle
     GLuint vao, vbo, ibo;
- 
+
     // generate and bind the vao
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
-    
+
     // generate and bind the vertex buffer object
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            
+
     // data for a fullscreen quad (this time with texture coords)
     GLfloat vertexData[] = {
-    //  X     Y     Z           U     V     
+    //  X     Y     Z           U     V
        1.0f, 1.0f, 0.0f,       1.0f, 1.0f, // vertex 0
       -1.0f, 1.0f, 0.0f,       0.0f, 1.0f, // vertex 1
        1.0f,-1.0f, 0.0f,       1.0f, 0.0f, // vertex 2
@@ -376,20 +377,20 @@ int main() {
 
     // fill with data
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*4*5, vertexData, GL_STATIC_DRAW);
-                    
-           
+
+
     // set up generic attrib pointers
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (char*)0 + 0*sizeof(GLfloat));
- 
+
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (char*)0 + 3*sizeof(GLfloat));
-    
-    
+
+
     // generate and bind the index buffer object
     glGenBuffers(1, &ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-            
+
     GLuint indexData[] = {
         0,1,2, // first triangle
         2,1,3, // second triangle
@@ -397,13 +398,13 @@ int main() {
 
     // fill with data
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*2*3, indexData, GL_STATIC_DRAW);
-    
+
     // "unbind" vao
     glBindVertexArray(0);
 
     // texture handle
     GLuint texture;
-    
+
     // generate texture
     glGenTextures(1, &texture);
 
@@ -421,58 +422,58 @@ int main() {
             image[4*index + 3] = 0xFF;                   // A
         }
     }
-    
+
     // set texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
+
     // set texture content
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
-    
+
     while(!glfwWindowShouldClose(window)) {
         glfwPollEvents();
-        
+
         // clear first
         glClear(GL_COLOR_BUFFER_BIT);
-        
+
         // use the shader program
         glUseProgram(shader_program);
 
         // bind texture to texture unit 0
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
-        
+
         // set texture uniform
         glUniform1i(texture_location, 0);
-        
+
         // bind the vao
         glBindVertexArray(vao);
-        
+
         // draw
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-       
+
         // check for errors
        /* GLenum error = glGetError();
         if(error != GL_NO_ERROR) {
             std::cerr << error << std::endl;
             break;
         }*/
-        
+
         // finally swap buffers
-        glfwSwapBuffers(window);     
+        glfwSwapBuffers(window);
     }
-    
+
     // delete the created objects
-    
+
     glDeleteTextures(1, &texture);
-    
+
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &ibo);
-    
-    glDetachShader(shader_program, vertex_shader);	
+
+    glDetachShader(shader_program, vertex_shader);
     glDetachShader(shader_program, fragment_shader);
     glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
@@ -482,4 +483,3 @@ int main() {
     glfwTerminate();
     return 0;
 }
-

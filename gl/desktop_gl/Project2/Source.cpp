@@ -4,13 +4,14 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
- 
+
 //Include glew header before glfw3.h
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctsdio>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ struct UserData
 
 void InitGL(UserData *d)
 {
-	//create our shader 
+	//create our shader
 	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -55,8 +56,8 @@ void InitGL(UserData *d)
 	char const * cFragmentShader = fragmentShader.c_str();
 	glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
 	glCompileShader(fragmentShaderId);
-	
-	
+
+
 	// Check Fragment Shader
     glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
@@ -92,7 +93,7 @@ void InitGL(UserData *d)
 
 	//Set the point size
 	//Note:  This functon is absent in Opengl ES 2.0
-	//You need to define this in vertex Shader. gl_PointSize = 10.0; 
+	//You need to define this in vertex Shader. gl_PointSize = 10.0;
 	glPointSize(10.0f); //Only present in Dekstop GL.
 	//TODO: Check if glPointSize is present in Opengl ES 3.0.
 }
@@ -108,8 +109,8 @@ int main(int argc, char **argv)
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	//glutInit(&argc, argv);
-	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+	GLFWwindow* window; // (In the accompanying source code, this variable is global)
+	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
@@ -118,12 +119,12 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window); // Initialize GLEW 
-	glewExperimental = true; // Needed in core profile 
+	glfwMakeContextCurrent(window); // Initialize GLEW
+	glewExperimental = true; // Needed in core profile
 
 	//Initialize Glew ~ which would load glFunctions :)
 	GLenum err = glewInit();
-	
+
 	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
@@ -136,19 +137,19 @@ int main(int argc, char **argv)
 
 	UserData userdata;
 	//Call opengl init functions
-	cout << "OpenGL version: " << glGetString(GL_VERSION); 
+	cout << "OpenGL version: " << glGetString(GL_VERSION);
 	cout << "\n Vendor: " << glGetString(GL_VENDOR);
 	InitGL(&userdata);
 
 	cout << "vao: " << userdata.vao;
- 
+
 	do{
 		//GL Code starts
 		//Clear the color buffer before drawing.
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glUseProgram(userdata.programId);
-		
+
 		glBindVertexArray(userdata.vao);
 
 		//Draw our point
@@ -159,11 +160,10 @@ int main(int argc, char **argv)
 		 // Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
- 
+
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
-	
+
 
     return 0;
 }
-

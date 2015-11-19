@@ -11,6 +11,21 @@ int main(int argc, char **argv)
 {
 	cout << "glm sample:" << endl;
 
+    //Transformations matrices.
+    
+    //1. translation matrices
+
+    // 1 0 0 10.0  -> X
+    // 0 1 0 0     -> Y
+    // 0 0 1 0     -> Z
+    // 0 0 0 1
+    glm::mat4 tr_m = glm::translate(glm::mat4(1.0f), glm::vec3(10.0f, 0.0f, 0.0f));
+    glm::vec4 myvec1(10.0f, 10.0f, 0.0f, 0.0f);
+
+    glm::mat4 transformedVector = tr_m * myvec1;
+
+
+
 	glm::mat4 trans(1.0f); // identity matrix by default.
 	//rotate matrix with angle 180 degree around Z axis.
 	trans = glm::rotate(trans, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));

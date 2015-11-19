@@ -4,9 +4,9 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
- 
 
-//Note: glew header should be included before glfw header else you will get 
+
+//Note: glew header should be included before glfw header else you will get
 //lot of compilation errors.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctsdio>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ int main(int argc, char **argv)
     glfwInit();
 
     //The below lines are required to make your code compatible to available GL version.
-   
+
    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
@@ -30,8 +31,8 @@ int main(int argc, char **argv)
 	//glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
 	//glutInit(&argc, argv);
-	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+	GLFWwindow* window; // (In the accompanying source code, this variable is global)
+	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
@@ -40,12 +41,12 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window); // Initialize GLEW 
-	glewExperimental = true; // Needed in core profile 
+	glfwMakeContextCurrent(window); // Initialize GLEW
+	glewExperimental = true; // Needed in core profile
 
 	//Initialize Glew ~ which would load glFunctions :)
 	GLenum err = glewInit();
-	
+
 	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
@@ -77,4 +78,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-

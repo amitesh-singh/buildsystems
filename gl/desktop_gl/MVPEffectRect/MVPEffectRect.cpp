@@ -4,9 +4,9 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
- 
 
-//Note: glew header should be included before glfw header else you will get 
+
+//Note: glew header should be included before glfw header else you will get
 //lot of compilation errors.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctsdio>
 
 //Glm headers
 #include <glm/glm.hpp>
@@ -31,7 +32,7 @@ struct UserData
 
 void InitGL(UserData *d)
 {
-	//create our shader 
+	//create our shader
 	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -71,7 +72,7 @@ void InitGL(UserData *d)
 	char const * cFragmentShader = fragmentShader.c_str();
 	glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
 	glCompileShader(fragmentShaderId);
-	
+
 	// Check Fragment Shader
     glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &Result);
     glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
@@ -98,7 +99,7 @@ void InitGL(UserData *d)
 		0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
 		0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f,
 	};
-	static const GLubyte index[] = 
+	static const GLubyte index[] =
 	{
 		0, 1, 2, 0, 2, 3
 	};
@@ -130,8 +131,8 @@ int main(int argc, char **argv)
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+	GLFWwindow* window; // (In the accompanying source code, this variable is global)
+	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
@@ -140,14 +141,14 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window); // Initialize GLEW 
-	glewExperimental = true; // Needed in core profile 
+	glfwMakeContextCurrent(window); // Initialize GLEW
+	glewExperimental = true; // Needed in core profile
 
 	//Initialize Glew ~ which would load glFunctions pointers. :)
 	//Note: You must declare glew here only else most of gl functions won't get initialized.
 	// glCreateShader function pointer would be 0.
 	GLenum err = glewInit();
-	
+
 	if (err == GLEW_OK)
 	{
 		std::cout << "Glew initialized ok\n";
@@ -160,7 +161,7 @@ int main(int argc, char **argv)
 
 	UserData userdata;
 	//Call opengl init functions
-	cout << "OpenGL version: " << glGetString(GL_VERSION); 
+	cout << "OpenGL version: " << glGetString(GL_VERSION);
 	cout << "\n Vendor: " << glGetString(GL_VENDOR);
 	InitGL(&userdata);
 
@@ -173,7 +174,7 @@ int main(int argc, char **argv)
     //projection
 	glm::mat4 proj = glm::perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
 	GLint uniProj = glGetUniformLocation(userdata.programId, "proj");
- 
+
     //view
 	glm::mat4 view = glm::lookAt(
 		glm::vec3(1.2f, 1.2f, 2.2f),
@@ -199,7 +200,7 @@ int main(int argc, char **argv)
 
 		glBindVertexArray(userdata.vao);
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE,
 			//We already passed indices to EBO, so no need to pass indices here. ;)
 			(void *) 0);
 
@@ -208,7 +209,7 @@ int main(int argc, char **argv)
 		 // Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
- 
+
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
 
@@ -222,4 +223,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-

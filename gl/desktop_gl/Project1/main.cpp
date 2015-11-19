@@ -13,6 +13,7 @@
 //End workaround
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <ctsdio>
 
 int main(int argc, char **argv)
 {
@@ -23,8 +24,8 @@ int main(int argc, char **argv)
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	//glutInit(&argc, argv);
-	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 1024, 768, "Window sample", NULL, NULL); 
+	GLFWwindow* window; // (In the accompanying source code, this variable is global)
+	window = glfwCreateWindow( 1024, 768, "Window sample", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
 			they are not 3.3 compatible. \
@@ -34,13 +35,13 @@ int main(int argc, char **argv)
 	}
 
 	//Initialize Glew ~ which would load glFunctions :)
-	
-	glfwMakeContextCurrent(window); // Initialize GLEW 
-	glewExperimental=true; // Needed in core profile 
+
+	glfwMakeContextCurrent(window); // Initialize GLEW
+	glewExperimental=true; // Needed in core profile
 
 	///NOTE: Always initialize glewinit after this, else glShaderCreate() will be null....
 	GLenum err = glewInit();
-	
+
 	if (err == GLEW_OK)
 	{
 		std::cout << "gliew initialized ok\n";
@@ -50,22 +51,21 @@ int main(int argc, char **argv)
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	
+
 
 	std::cout << "glew version using: " << glewGetString(GLEW_VERSION) << std::endl;
 
- 
+
 	do{
 		// Draw nothing
 
 		 // Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
- 
+
 	} // Check if the ESC key was pressed or the window was closed
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
-	
+
 
     return 0;
 }
-
