@@ -4,7 +4,7 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
- 
+
 
 //Note: glew header should be included before glfw header else you will get 
 //lot of compilation errors.
@@ -14,162 +14,163 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdio>
 
 using namespace std;
 
 struct UserData
 {
-	GLuint programId;
-	GLuint vao;
-	GLuint vbo, ebo;
+   GLuint programId;
+   GLuint vao;
+   GLuint vbo, ebo;
 };
 
 void InitGL(UserData *d)
 {
-	//create our shader 
-	GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+   //create our shader 
+   GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+   GLuint fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
-	//Vertex Shader
-	string  vertexShader = "#version 330 core\n"
-						   "layout(location = 0) in vec3 position_model; \n"
-						   "void main() {\n"
-						   "gl_Position = vec4(position_model.x, position_model.y, position_model.z, 1.0); }\n";
+   //Vertex Shader
+   string  vertexShader = "#version 330 core\n"
+      "layout(location = 0) in vec3 position_model; \n"
+      "void main() {\n"
+      "gl_Position = vec4(position_model.x, position_model.y, position_model.z, 1.0); }\n";
 
-	char const * cVertexShader = vertexShader.c_str();
-	glShaderSource(vertexShaderId, 1, &cVertexShader, NULL);
-	glCompileShader(vertexShaderId);
-	GLint Result = GL_FALSE;
-	int InfoLogLength;
+   char const * cVertexShader = vertexShader.c_str();
+   glShaderSource(vertexShaderId, 1, &cVertexShader, NULL);
+   glCompileShader(vertexShaderId);
+   GLint Result = GL_FALSE;
+   int InfoLogLength;
 
-	// Check Vertex Shader
-    glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &Result);
-    glGetShaderiv(vertexShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
-    glGetShaderInfoLog(vertexShaderId, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-    fprintf(stdout, "\nvertex: %s\n", &FragmentShaderErrorMessage[0]);
+   // Check Vertex Shader
+   glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &Result);
+   glGetShaderiv(vertexShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+   std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
+   glGetShaderInfoLog(vertexShaderId, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+   fprintf(stdout, "\nvertex: %s\n", &FragmentShaderErrorMessage[0]);
 
-	//Fragment shader
-	string fragmentShader = "#version 330 core\n"
-		"out vec3 color;\n"
-		" void main() { \n"
-		"color = vec3(1, 0, 0); }";
+   //Fragment shader
+   string fragmentShader = "#version 330 core\n"
+      "out vec3 color;\n"
+      " void main() { \n"
+      "color = vec3(1, 0, 0); }";
 
-	char const * cFragmentShader = fragmentShader.c_str();
-	glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
-	glCompileShader(fragmentShaderId);
-	
-	// Check Fragment Shader
-    glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &Result);
-    glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    //std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
-    glGetShaderInfoLog(fragmentShaderId, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-    fprintf(stdout, "\nfragment: %s\n", &FragmentShaderErrorMessage[0]);
+   char const * cFragmentShader = fragmentShader.c_str();
+   glShaderSource(fragmentShaderId, 1, &cFragmentShader, NULL);
+   glCompileShader(fragmentShaderId);
 
-	d->programId = glCreateProgram();
-	glAttachShader(d->programId, vertexShaderId);
-	glAttachShader(d->programId, fragmentShaderId);
-	glLinkProgram(d->programId);
+   // Check Fragment Shader
+   glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &Result);
+   glGetShaderiv(fragmentShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+   //std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
+   glGetShaderInfoLog(fragmentShaderId, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+   fprintf(stdout, "\nfragment: %s\n", &FragmentShaderErrorMessage[0]);
 
-	glDeleteShader(vertexShaderId);
-	glDeleteShader(fragmentShaderId);
+   d->programId = glCreateProgram();
+   glAttachShader(d->programId, vertexShaderId);
+   glAttachShader(d->programId, fragmentShaderId);
+   glLinkProgram(d->programId);
 
-	//create our VAO
-	glGenVertexArrays(1, &d->vao);
-	glBindVertexArray(d->vao);
+   glDeleteShader(vertexShaderId);
+   glDeleteShader(fragmentShaderId);
 
-	static const GLfloat vertices[] =
-	{
-		-0.5f, -0.5f, 0.0f,
-		-0.5f, 0.5f, 0.0f,
-		0.5f,  0.0f, 0.0f,
-		0.0f, 0.5f, 0.0f,
-	};
-	static const GLubyte index[] = 
-	{
-		0, 1, 2, 1, 2, 3
-	};
-	//create ebo
-	glGenBuffers(1, &d->ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, d->ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
-	//create vbo
-	glGenBuffers(1, &d->vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, d->vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+   //create our VAO
+   glGenVertexArrays(1, &d->vao);
+   glBindVertexArray(d->vao);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *) 0);
+   static const GLfloat vertices[] =
+     {
+        -0.5f, -0.5f, 0.0f,
+        -0.5f, 0.5f, 0.0f,
+        0.5f,  0.0f, 0.0f,
+        0.0f, 0.5f, 0.0f,
+     };
+   static const GLubyte index[] = 
+     {
+        0, 1, 2, 1, 2, 3
+     };
+   //create ebo
+   glGenBuffers(1, &d->ebo);
+   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, d->ebo);
+   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(index), index, GL_STATIC_DRAW);
+   //create vbo
+   glGenBuffers(1, &d->vbo);
+   glBindBuffer(GL_ARRAY_BUFFER, d->vbo);
+   glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+   glEnableVertexAttribArray(0);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void *) 0);
 }
 
 int main(int argc, char **argv)
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+   glfwInit();
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+   //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	//glutInit(&argc, argv);
-	GLFWwindow* window; // (In the accompanying source code, this variable is global) 
-	window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
-	if( window == NULL ){
-		fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
-			they are not 3.3 compatible. \
-			Try the 2.1 version of the tutorials.\n" );
-		glfwTerminate();
-		return -1;
-	}
+   //glutInit(&argc, argv);
+   GLFWwindow* window; // (In the accompanying source code, this variable is global) 
+   window = glfwCreateWindow( 500, 500, "Window sample", NULL, NULL); 
+   if( window == NULL ){
+        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, \
+                 they are not 3.3 compatible. \
+                 Try the 2.1 version of the tutorials.\n" );
+        glfwTerminate();
+        return -1;
+   }
 
-	glfwMakeContextCurrent(window); // Initialize GLEW 
-	glewExperimental = true; // Needed in core profile 
+   glfwMakeContextCurrent(window); // Initialize GLEW 
+   glewExperimental = true; // Needed in core profile 
 
-	//Initialize Glew ~ which would load glFunctions :)
-	GLenum err = glewInit();
-	
-	if (err == GLEW_OK)
-	{
-		std::cout << "Glew initialized ok\n";
-	}
+   //Initialize Glew ~ which would load glFunctions :)
+   GLenum err = glewInit();
 
-	std::cout << "glew version using: " << glewGetString(GLEW_VERSION) << std::endl;
+   if (err == GLEW_OK)
+     {
+        std::cout << "Glew initialized ok\n";
+     }
 
-	// Ensure we can capture the escape key being pressed below
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+   std::cout << "glew version using: " << glewGetString(GLEW_VERSION) << std::endl;
 
-	UserData userdata;
-	//Call opengl init functions
-	cout << "OpenGL version: " << glGetString(GL_VERSION); 
-	cout << "\n Vendor: " << glGetString(GL_VENDOR);
-	InitGL(&userdata);
+   // Ensure we can capture the escape key being pressed below
+   glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
-	cout << "vao: " << userdata.vao;
- 
-	do{
-		//GL Code starts
+   UserData userdata;
+   //Call opengl init functions
+   cout << "OpenGL version: " << glGetString(GL_VERSION); 
+   cout << "\n Vendor: " << glGetString(GL_VENDOR);
+   InitGL(&userdata);
 
-		glClear(GL_COLOR_BUFFER_BIT);
+   cout << "vao: " << userdata.vao;
 
-		glUseProgram(userdata.programId);
-		
-		glBindVertexArray(userdata.vao);
+   do{
+        //GL Code starts
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
-			//We already passed indices to EBO, so no need to pass indices here. ;)
-			(void *) 0);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		//GL Code ends
+        glUseProgram(userdata.programId);
 
-		 // Swap buffers
-		glfwSwapBuffers(window);
-		glfwPollEvents();
- 
-	} // Check if the ESC key was pressed or the window was closed
-	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
-	
+        glBindVertexArray(userdata.vao);
 
-    return 0;
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 
+                       //We already passed indices to EBO, so no need to pass indices here. ;)
+           (void *) 0);
+
+        //GL Code ends
+
+        // Swap buffers
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
+   } // Check if the ESC key was pressed or the window was closed
+   while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 );
+
+
+   return 0;
 }
 
