@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include <SOIL.h>
-#include <ctsdio>
+#include <cstdio>
 
 using namespace std;
 

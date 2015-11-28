@@ -13,7 +13,7 @@
 //End workaround
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <ctsdio>
+#include <cstdio>
 
 int main(int argc, char **argv)
 {

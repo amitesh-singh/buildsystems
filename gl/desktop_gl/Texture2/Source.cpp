@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <ctsdio>
+#include <cstdio>
 
 using namespace std;
 
