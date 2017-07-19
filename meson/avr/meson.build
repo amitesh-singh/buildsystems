@@ -36,5 +36,13 @@ exe = executable('blink', 'blink.c',
 
 message(exe.full_path())
 #error('hello world')
-run_target('stripp', command: [mystrip, (exe.full_path())], depends: exe)
+stripbuild = run_target('stripp', command: [mystrip, (exe.full_path())], depends: exe)
+mysize = find_program('avr-size')
+
+run_target('size', command: [mysize, exe.full_path(), '--mcu=attiny13a -C --format=avr'], depends: exe)
+
+myobjcmd = find_program('avr-objcopy')
+run_target('objcopy-prepare', command: [myobjcmd, ['-O', 'ihex', '-j', '.eeprom', '--set-section-flags=.eeprom=alloc,load', '--no-change-warnings', 
+                                                   '--change-section-lma', '.eeprom=0', exe.full_path(), exe.full_path() + '.eep']])
+run_target('objcopy', command: [myobjcmd, ['-O', 'ihex', '-R', '.eeprom', exe.full_path(), exe.full_path() + '.hex']])
 
