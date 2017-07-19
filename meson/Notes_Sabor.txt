@@ -1,0 +1,42 @@
+    === meson.avr ===
+
+    [binaries]
+    c = '/usr/bin/avr-gcc'
+    cpp = '/usr/bin/avr-g++'
+    ar = '/usr/bin/avr-ar'
+    strip = '/usr/bin/avr-strip'
+    # exe_wrapper = '???'
+
+    [properties]
+
+    c_args = [ '-mmcu=atmega48' ]
+    c_link_args = [ '-mmcu=atmega48' ]
+
+    needs_exe_wrapper = true
+
+    [host_machine]
+    system = 'avr'
+    cpu_family = 'avr8'
+    cpu = 'atmega48'
+    endian = 'little'
+
+
+    === meson.build ===
+
+    project( 'multiarch', 'c' )
+    executable( 'hello', 'hello.c', native : true )
+    serctrl_elf = executable( 'serctrl', 'serctrl.c' )
+
+    custom_target( 'serctrl.srec',
+      output : 'serctrl.srec',
+      input : serctrl_elf.full_path(),
+      command : [ '/usr/bin/avr-objcopy', '-j', '.text', '-j', '.data', '-O', 'srec', '@INPUT@', '@OUTPUT@' ],
+      depends : serctrl_elf )
+
+    === running it ===
+
+    mkdir build
+    cd build
+    meson .. . --cross-file ../meson.avr
+    ninja
+
