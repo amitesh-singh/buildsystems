@@ -1,0 +1,10 @@
+how to install meson
+---------------------
+
+sudo pacman -S meson
+
+how to build and run executable
+--------------------------------
+meson builddir
+cd builddir
+ninja
