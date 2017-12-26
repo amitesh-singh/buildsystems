@@ -5,7 +5,13 @@ ar = 'avr-ar'
 strip = 'avr-strip'
 
 [host_machine]
-system = 'avr'
+system = 'linux'
+cpu_family = 'x86_64'
+cpu = 'x64'
+endian = 'little'
+
+[target_machine]
+system = 'bare-metel'
 cpu_family = 'avr'
 cpu = 'avr'
 endian = 'little'
