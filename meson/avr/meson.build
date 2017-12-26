@@ -46,7 +46,7 @@ makehexbuild = custom_target('makehex',
               input: exe.full_path(),
               output: 'blink' + '.hex',
               command: [myobjcmd,'-O', 'ihex', '-R', '.eeprom', '@INPUT@', '@OUTPUT@'], depends: exe,
-               build_always : true
+#               build_always : true
              )
 
 
