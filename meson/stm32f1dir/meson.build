@@ -32,8 +32,6 @@ endif
 
 libocm3_incdir = include_directories(libocm3IncPath)
 
-subdir('lib')
-
 myfoolib_path= '../lib'
 stm32f1cargs = ['-Os',
                 '-ggdb',
@@ -43,10 +41,10 @@ stm32f1cargs = ['-Os',
                 '-msoft-float',
                 '-std=gnu++14',
                 '-Wall',
+                '-Wshadow',
                 '-ffunction-sections',
                 '-fdata-sections',
                 '-D' + cpudefine,
-                '-fdata-sections',
                 '-fno-exceptions',
                 '-I' + myfoolib_path,
 #'-I' + libocm3IncPath
@@ -67,12 +65,12 @@ stm32f1linkargs = ['-Os',
                    '--specs=nosys.specs',
                    '-nostartfiles',
                    '-Wl,--gc-sections',
-                   '-Wl,--gc-sections',
                    '-Wl,--relax',
                    '-L' + libocm3LibPath,
 #               '-l' + libocm3cputype,
                   ]
 
+subdir('lib')
 p = ['blink', srcfiles, stm32f1cargs, stm32f1linkargs]
 
 exe = executable(p[0], p[1],
