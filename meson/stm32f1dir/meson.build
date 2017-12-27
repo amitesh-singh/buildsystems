@@ -6,6 +6,7 @@ size = find_program('arm-none-eabi-size')
 objcopy = find_program('arm-none-eabi-objcopy')
 stinfo = find_program('st-info')
 stflash = find_program('st-flash')
+openocd = find_program('openocd')
 
 #define libopencm3 path here
 libocm3Path = '/home/ami/repos/libopencm3'
@@ -88,6 +89,8 @@ run_target('size', command: [size, exe.full_path(), '-B'], depends: exe)
 # STlink programmer related commands
 run_target('probe', command: [stinfo, '--probe'])
 run_target('upload', command: [stflash, 'write', exe.full_path() + '.hex', '0x08000000'], depends: exe)
+run_target('ocdupload', command: [openocd,  '-f', 'interface/stlink-v2.cfg', '-f', 'target/stm32f103.cfg', '-c', 'init',
+'-c', 'reset halt', '-c', 'flash write_image erase ' + exe.full_path() + '.hex ' + '0x08000000', '-c', 'reset'], depends: exe)
 
 if meson.is_cross_build()
    message('cross compiling for ' + cputype)
