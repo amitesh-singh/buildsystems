@@ -1,6 +1,9 @@
-#include <libopencm3/cm3/common.h>
-#include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/gpio.h>
+extern "C"
+{
+   #include <libopencm3/cm3/common.h>
+   #include <libopencm3/stm32/rcc.h>
+   #include <libopencm3/stm32/gpio.h>
+}
 
 static void my_delay_1( void )
 {
