@@ -7,7 +7,8 @@ cmake_minimum_required(VERSION 3.1)
 # cmake -G "Visual Studio 11 2012 Win64" --> ${CMAKE_CL_64} is true
 # if ${CMAKE_CL_64} is 0, it means 32 bits windows compiler
 # cmake -G "Visual Studio 11 2012" or cmake .
-// (~ O'O)~ ^ |__|
+# (~ O'O)~ ^ |__|
+cmake_minimum_required(VERSION 3.20)
 message(STATUS "compiler version: ${CMAKE_CL_64}")
 
 if (${CMAKE_CL_64})

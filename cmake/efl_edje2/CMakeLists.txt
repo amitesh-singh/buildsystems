@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.20)
 project("Edje")
 find_program(EDJE_CC edje_cc)
 

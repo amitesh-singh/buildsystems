@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2)
 project(myefl)
 #find_package(elementary REQUIRED)
 find_program(EDJE_CC_EXECUTABLE edje_cc)

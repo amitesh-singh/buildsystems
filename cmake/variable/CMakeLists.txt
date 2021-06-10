@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.2)
 project(HELLO)
 #Declare the variable
 set(HELLO_SRCS
